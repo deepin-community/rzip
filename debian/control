@@ -1,0 +1,20 @@
+Source: rzip
+Section: utils
+Priority: optional
+Maintainer: Deepin Developer <deepin-dev@deepin.org>
+Build-Depends: debhelper (>= 10), dh-autoreconf, libbz2-dev (>= 1.0.2)
+Standards-Version: 3.9.8
+Homepage: http://rzip.samba.org
+
+Package: rzip
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: compression program for large files
+ rzip is a compression program able to take advantage of
+ long distance redundancies in files, allowing greater
+ compression ratios. rzip uses a history buffer of up to
+ 900MB, while gzip uses 32KB and bzip2 uses 900KB. rzip
+ cannot read from the standard input or write to the
+ standard output.
+ .
+ This package provides rzip and runzip commands.

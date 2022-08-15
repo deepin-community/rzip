@@ -1,0 +1,13 @@
+Author: Alec Berryman <alec@thened.net>
+Description: Spelling error.
+--- a/rzip.yo
++++ b/rzip.yo
+@@ -8,7 +8,7 @@ rzip [OPTIONS] <files...>
+ manpagedescription()
+ 
+ rzip is a file compression program designed to do particularly
+-well on very large files containing long distance redundency.
++well on very large files containing long distance redundancy.
+ 
+ manpagesection(OPTIONS SUMMARY)
+ 

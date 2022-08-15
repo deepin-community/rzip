@@ -1,0 +1,8 @@
+10_maintain_times.patch
+20_long_options.patch
+30_man_spelling.patch
+40_runzip.patch
+50_fhs.patch
+60_fix_manpage.patch
+70_hardeningflags.patch
+80-CVE-2017-8364-fill-buffer.patch

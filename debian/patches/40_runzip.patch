@@ -1,0 +1,15 @@
+Author: Alec Berryman <alec@thened.net>
+Description: Link rzip to runzip for easier unrzipping.
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -33,8 +33,10 @@ man: rzip.1
+ install: all
+ 	-mkdir -p ${INSTALL_BIN}
+ 	${INSTALLCMD} -m 755 rzip ${INSTALL_BIN}
++	ln ${INSTALL_BIN}/rzip ${INSTALL_BIN}/runzip
+ 	-mkdir -p ${INSTALL_MAN}/man1
+ 	${INSTALLCMD} -m 644 $(srcdir)/rzip.1 ${INSTALL_MAN}/man1/
++	ln ${INSTALL_MAN}/man1/rzip.1 ${INSTALL_MAN}/man1/runzip.1
+ 
+ rzip: $(OBJS)
+ 	$(CC) $(CFLAGS) -o rzip $(OBJS) $(LIBS)

@@ -1,0 +1,84 @@
+Description: Fix hyphen-used-as-minus-sign lintian warning in manpage
+Forwarded: no
+Author: Daniel Echeverry <epsilon77@gmail.com>
+Last-Update: 2013-08-17
+--- a/rzip.1
++++ b/rzip.1
+@@ -8,7 +8,7 @@ rzip [OPTIONS] <files\&.\&.\&.>
+ .SH "DESCRIPTION" 
+ .PP 
+ rzip is a file compression program designed to do particularly
+-well on very large files containing long distance redundency\&.
++well on very large files containing long distance redundancy\&.
+ .PP 
+ .SH "OPTIONS SUMMARY" 
+ .PP 
+@@ -17,16 +17,16 @@ Here is a summary of the options to rzip
+ .nf 
+  
+ 
+- -0            fastest (worst) compression
+- -6            default compression
+- -9            slowest (best) compression
+- -d            decompress
+- -o filename   specify the output file name
+- -S suffix     specify compressed suffix (default \&'\&.rz\&')
+- -f            force overwrite of any existing files
+- -k            keep existing files
+- -P            show compression progress
+- -V            show version
++ \-0            fastest (worst) compression
++ \-6            default compression
++ \-9            slowest (best) compression
++ \-d            decompress
++ \-o filename   specify the output file name
++ \-S suffix     specify compressed suffix (default \&'\&.rz\&')
++ \-f            force overwrite of any existing files
++ \-k            keep existing files
++ \-P            show compression progress
++ \-V            show version
+ 
+ .fi 
+  
+@@ -50,12 +50,12 @@ amounts of memory then you will probably
+ .IP "\fB-d\fP" 
+ Decompress\&. If this option is not used then rzip looks at
+ the name used to launch the program\&. If it contains the string
+-\&'runzip\&' then the -d option is automatically set\&.
++\&'runzip\&' then the \-d option is automatically set\&.
+ .IP 
+ .IP "\fB-o\fP" 
+ Set the output file name\&. If this option is not set then
+ the output file name is chosen based on the input name and the
+-suffix\&. The -o option cannot be used if more than one file name is
++suffix\&. The \-o option cannot be used if more than one file name is
+ specified on the command line\&.
+ .IP 
+ .IP "\fB-S\fP" 
+@@ -90,7 +90,7 @@ first stage\&.
+ .PP 
+ The key difference between rzip and other well known compression
+ algorithms is its ability to take advantage of very long distance
+-redundency\&. The well known deflate algorithm used in gzip uses a
++redundancy\&. The well known deflate algorithm used in gzip uses a
+ maximum history buffer of 32k\&. The block sorting algorithm used in
+ bzip2 is limited to 900k of history\&. The history buffer in rzip can be
+ up to 900MB long, several orders of magnitude larger than gzip or
+@@ -102,7 +102,7 @@ home directories several users might hav
+ of quite similar files\&. It is also common to have a single file that
+ contains large duplicated chunks over long distances, such as pdf
+ files containing repeated copies of the same image\&. Most compression
+-programs won\&'t be able to take advantage of this redundency, and thus
++programs won\&'t be able to take advantage of this redundancy, and thus
+ might achieve a much lower compression ratio than rzip can achieve\&.
+ .PP 
+ .SH "HISTORY" 
+@@ -132,7 +132,7 @@ rzip was written by Andrew Tridgell
+ http://samba\&.org/~tridge/
+ .PP 
+ If you wish to report a problem or make a suggestion then please email
+-bugs-rzip@tridgell\&.net
++bugs\-rzip@tridgell\&.net
+ .PP 
+ rzip is released under the GNU General Public License version 2 or
+ later\&. Please see the file COPYING for license details\&.

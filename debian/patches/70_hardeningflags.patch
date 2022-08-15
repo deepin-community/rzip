@@ -1,0 +1,43 @@
+Description: Add CPPFLAGS, CFLAGS and LDFLAGS to use hardening flags
+Forwarded: No
+Author: Daniel Echeverry <epsilon77@gmail.com>
+Last-Update: 2013-08-25
+
+Description: avoid a CFLAGS override by upstream source code.
+Author: Joao Eriberto Mota Filho <eriberto@debian.org>
+Last-Update: 2016-03-07
+Index: rzip-2.1/Makefile.in
+===================================================================
+--- rzip-2.1.orig/Makefile.in
++++ rzip-2.1/Makefile.in
+@@ -24,7 +24,7 @@ OBJS= rzip.o runzip.o main.o stream.o ut
+ 
+ # note that the -I. is needed to handle config.h when using VPATH
+ .c.o:
+-	$(CC) -I. -I$(srcdir) $(CFLAGS) -c $< -o $@
++	$(CC) -I. -I$(srcdir) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+ 
+ all: rzip
+ 
+@@ -39,7 +39,7 @@ install: all
+ 	ln ${INSTALL_MAN}/man1/rzip.1 ${INSTALL_MAN}/man1/runzip.1
+ 
+ rzip: $(OBJS)
+-	$(CC) $(CFLAGS) -o rzip $(OBJS) $(LIBS)
++	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -o rzip $(OBJS) $(LIBS)
+ 
+ rzip.1: rzip.yo
+ 	yodl2man -o rzip.1 rzip.yo
+Index: rzip-2.1/configure.in
+===================================================================
+--- rzip-2.1.orig/configure.in
++++ rzip-2.1/configure.in
+@@ -11,7 +11,7 @@ AC_SYS_LARGEFILE
+ # Thanks to Martin Pool
+ if test x"$GCC" = xyes 
+ then
+-    CFLAGS="-g -Wall -O3"
++#    CFLAGS="-g -Wall -O3"
+     AC_MSG_NOTICE([Setting gcc options: $CFLAGS])
+ fi
+ 

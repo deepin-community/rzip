@@ -1,0 +1,162 @@
+Author: Alec Berryman <alec@thened.net>
+Description: Implement GNU-style long options.
+--- a/main.c
++++ b/main.c
+@@ -25,17 +25,18 @@ static void usage(void)
+ 	printf("Copright (C) Andrew Tridgell 1998-2003\n\n");
+ 	printf("usage: rzip [options] <file...>\n");
+ 	printf(" Options:\n");
+-	printf("     -0            fastest (worst) compression\n");
+-	printf("     -6            default compression level\n");
+-	printf("     -9            slowest (best) compression\n");
+-	printf("     -d            decompress\n");
+-	printf("     -o filename   specify the output file name\n");
+-	printf("     -S suffix     specify compressed suffix (default '.rz')\n");
+-	printf("     -f            force overwrite of any existing files\n");
+-	printf("     -k            keep existing files\n");
+-	printf("     -P            show compression progress\n");
+-	printf("     -L level      set compression level\n");
+-	printf("     -V            show version\n");
++	printf("  -0, --worst            fastest (worst) compression\n");
++	printf("  -6                     default compression level\n");
++	printf("  -9, --best             slowest (best) compression\n");
++	printf("  -d, --decompress       decompress\n");
++	printf("  -f, --force            force overwrite of any existing files\n");
++	printf("  -o, --output FILENAME  specify the output file name\n");
++	printf("  -k, --keep             keep existing files\n");
++	printf("  -L, --level LEVEL      set compression level\n");
++	printf("  -P, --progress         show compression progress\n");
++	printf("  -S, --suffix SUFFIX    specify compressed suffix (default '.rz')\n");
++	printf("  -v, --verbose          increase verbosity\n");
++	printf("  -V, --version          show version\n");
+ #if 0
+ 	/* damn, this will be quite hard to do */
+ 	printf("     -t          test compressed file integrity\n");
+@@ -283,7 +284,25 @@ static void compress_file(struct rzip_co
+ 		control.flags |= FLAG_DECOMPRESS;
+ 	}
+ 
+-	while ((c = getopt(argc, argv, "h0123456789dS:tVvkfPo:L:")) != -1) {
++	static struct option options[] =
++		{
++		{ "level", required_argument, NULL, 'L' },
++		{ "decompress", no_argument, NULL, 'd' },
++		{ "suffix", required_argument, NULL, 'S' },
++		{ "output", required_argument, NULL, 'o' },
++		{ "force", no_argument, NULL, 'f' },
++		{ "keep", no_argument, NULL, 'k' },
++		{ "verbose", no_argument, NULL, 'v' },
++		{ "progress", no_argument, NULL, 'P' },
++		{ "version", no_argument, NULL, 'V' },
++		{ "best", no_argument, NULL, '9' },
++		{ "worst", no_argument, NULL, '0' },
++		{ "help", no_argument, NULL, 'h' }
++		};
++
++	while ((c = getopt_long(argc, argv, "h0123456789dS:tVvkfPo:L:", options, 
++				NULL)) != -1) {
++
+ 		if (isdigit(c)) {
+ 			control.compression_level = c - '0';
+ 			continue;
+--- a/rzip.h
++++ b/rzip.h
+@@ -46,6 +46,7 @@
+ 
+ #include <fcntl.h>
+ #include <sys/stat.h>
++#include <getopt.h>
+ 
+ #ifdef HAVE_CTYPE_H
+ #include <ctype.h>
+--- a/rzip.yo
++++ b/rzip.yo
+@@ -14,52 +14,56 @@ manpagesection(OPTIONS SUMMARY)
+ 
+ Here is a summary of the options to rzip.
+ verb(
+- -0            fastest (worst) compression
+- -6            default compression
+- -9            slowest (best) compression
+- -d            decompress
+- -o filename   specify the output file name
+- -S suffix     specify compressed suffix (default '.rz')
+- -f            force overwrite of any existing files
+- -k            keep existing files
+- -P            show compression progress
+- -V            show version
++-0, --worst            fastest (worst) compression
++-6                     default compression level
++-9, --best             slowest (best) compression
++-d, --decompress       decompress
++-f, --force            force overwrite of any existing files
++-o, --output FILENAME  specify the output file name
++-k, --keep             keep existing files
++-L, --level LEVEL      set compression level
++-P, --progress         show compression progress
++-S, --suffix SUFFIX    specify compressed suffix (default '.rz')
++-v, --verbose          increase verbosity
++-V, --version          show version
+ )
+ 
+ manpageoptions()
+ 
+ startdit()
+-dit(bf(-h)) Print an options summary page
++dit(bf(-h --help)) Print an options summary page
+ 
+-dit(bf(-V)) Print the rzip version number
++dit(bf(-V --version)) Print the rzip version number
+ 
+-dit(bf(-0..9)) Set the compression level from 0 to 9. The default is
+-to use level 6, which is a reasonable compromise between speed and
+-compression. The compression level is also strongly related to how much
+-memory rzip uses, so if you are running rzip on a machine with limited
+-amounts of memory then you will probably want to choose a smaller level.
+-
+-dit(bf(-d)) Decompress. If this option is not used then rzip looks at
+-the name used to launch the program. If it contains the string
+-'runzip' then the -d option is automatically set.
+-
+-dit(bf(-o)) Set the output file name. If this option is not set then
+-the output file name is chosen based on the input name and the
+-suffix. The -o option cannot be used if more than one file name is
++dit(bf(-0 (or --worst) to -9 (or --best) --level)) Set the compression level
++from 0 to 9. The default is to use level 6, which is a reasonable compromise
++between speed and compression.  The compression level is also strongly related
++to how much memory rzip uses, so if you are running rzip on a machine with
++limited amounts of memory then you will probably want to choose a smaller
++level.
++
++dit(bf(-d --decompress)) Decompress. If this option is not used then
++rzip looks at the name used to launch the program. If it contains the
++string 'runzip' then the -d option is automatically set.
++
++dit(bf(-o --output)) Set the output file name. If this option is not
++set then the output file name is chosen based on the input name and
++the suffix. The -o option cannot be used if more than one file name is
+ specified on the command line.
+ 
+-dit(bf(-S)) Set the compression suffix. The default is '.rz'. 
++dit(bf(-S --suffix)) Set the compression suffix. The default is '.rz'.
+ 
+-dit(bf(-f)) If this option is not specified then rzip will not
++dit(bf(-f --force)) If this option is not specified then rzip will not
+ overwrite any existing files. If you set this option then rzip will
+ silently overwrite any files as needed.
+ 
+-dit(bf(-k)) If this option is not specified then rzip will delete the
+-source file after successful compression or decompression. When this
+-option is specified then the source files are not deleted.
++dit(bf(-k --keep)) If this option is not specified then rzip will
++delete the source file after successful compression or
++decompression. When this option is specified then the source files are
++not deleted.
+ 
+-dit(bf(-P)) If this option is specified then rzip will show the
+-percentage progress while compressing.
++dit(bf(-P --progress)) If this option is specified then rzip will show
++the percentage progress while compressing.
+ 
+ enddit()
+ 
