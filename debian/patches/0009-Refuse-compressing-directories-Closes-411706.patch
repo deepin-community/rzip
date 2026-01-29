@@ -1,0 +1,24 @@
+From: =?utf-8?b?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
+Date: Tue, 15 Oct 2024 16:25:54 +0200
+Subject: Refuse compressing directories (Closes: #411706)
+
+---
+ main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/main.c b/main.c
+index 9108d80..4008bb2 100644
+--- a/main.c
++++ b/main.c
+@@ -230,7 +230,10 @@ static void compress_file(struct rzip_control *control)
+ 	}
+ 
+ 	stat(control->infile,&sb);
+-	
++	if (S_ISDIR(sb.st_mode)) {
++		fatal("Can't compress %s: %s\n", control->infile, strerror(EISDIR));
++	}
++
+ 	fd_in = open(control->infile,O_RDONLY);
+ 	if (fd_in == -1) {
+ 		fatal("Failed to open %s: %s\n", control->infile, strerror(errno));

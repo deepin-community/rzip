@@ -1,0 +1,57 @@
+From: =?utf-8?b?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
+Date: Tue, 15 Oct 2024 16:38:42 +0200
+Subject: Fix UBSAN shifts
+
+---
+ runzip.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/runzip.c b/runzip.c
+index e7642af..671c46e 100644
+--- a/runzip.c
++++ b/runzip.c
+@@ -31,34 +31,34 @@ static inline uchar read_u8(void *ss, int stream)
+ static inline unsigned read_u16(void *ss, int stream)
+ {
+ 	unsigned ret;
+-	ret = read_u8(ss, stream);
+-	ret |= read_u8(ss, stream)<<8;
++	ret = ((unsigned)read_u8(ss, stream));
++	ret |= ((unsigned)read_u8(ss, stream))<<8;
+ 	return ret;
+ }
+ 
+ static inline unsigned read_u32(void *ss, int stream)
+ {
+ 	unsigned ret;
+-	ret = read_u8(ss, stream);
+-	ret |= read_u8(ss, stream)<<8;
+-	ret |= read_u8(ss, stream)<<16;
+-	ret |= read_u8(ss, stream)<<24;
++	ret = ((unsigned)read_u8(ss, stream));
++	ret |= ((unsigned)read_u8(ss, stream))<<8;
++	ret |= ((unsigned)read_u8(ss, stream))<<16;
++	ret |= ((unsigned)read_u8(ss, stream))<<24;
+ 	return ret;
+ }
+ 
+ static inline unsigned read_u24(void *ss, int stream)
+ {
+ 	unsigned ret;
+-	ret = read_u8(ss, stream);
+-	ret |= read_u8(ss, stream)<<8;
+-	ret |= read_u8(ss, stream)<<16;
++	ret = ((unsigned)read_u8(ss, stream));
++	ret |= ((unsigned)read_u8(ss, stream))<<8;
++	ret |= ((unsigned)read_u8(ss, stream))<<16;
+ 	return ret;
+ }
+ 
+ 
+ static int read_header(void *ss, uchar *head)
+ {
+-	*head = read_u8(ss, 0);
++	*head = ((unsigned)read_u8(ss, 0));
+ 	return read_u16(ss, 0);
+ }
+ 

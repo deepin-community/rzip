@@ -1,0 +1,26 @@
+From: =?utf-8?b?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
+Date: Tue, 15 Oct 2024 16:33:58 +0200
+Subject: Don't loop forever if input truncated (or corrupted) (Closes:
+ #1085156)
+
+---
+ runzip.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/runzip.c b/runzip.c
+index a73346e..e7642af 100644
+--- a/runzip.c
++++ b/runzip.c
+@@ -181,7 +181,11 @@ off_t runzip_fd(int fd_in, int fd_out, int fd_hist, off_t expected_size)
+ {
+ 	off_t total = 0;
+ 	while (total < expected_size) {
+-		total += runzip_chunk(fd_in, fd_out, fd_hist);
++		off_t rd = runzip_chunk(fd_in, fd_out, fd_hist);
++		total += rd;
++		if (total < expected_size && rd == 0) {
++			fatal("Input file truncated!\n");
++		}
+ 	}
+ 	return total;
+ }

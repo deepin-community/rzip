@@ -1,0 +1,25 @@
+From: =?utf-8?b?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
+Date: Tue, 15 Oct 2024 16:45:02 +0200
+Subject: Detect short read,
+ preventing uninitialised memory access (Closes: #774037)
+
+---
+ runzip.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/runzip.c b/runzip.c
+index 671c46e..4020df6 100644
+--- a/runzip.c
++++ b/runzip.c
+@@ -72,7 +72,10 @@ static int unzip_literal(void *ss, int len, int fd_out, uint32 *cksum)
+ 		fatal("Failed to allocate literal buffer of size %d\n", len);
+ 	}
+ 
+-	read_stream(ss, 1, buf, len);
++	int rd = read_stream(ss, 1, buf, len);
++	if (rd != len) {
++		fatal("Short read: %d < %d\n", rd, len);
++	}
+ 	if (write(fd_out, buf, len) != len) {
+ 		fatal("Failed to write literal buffer of size %d\n", len);
+ 	}

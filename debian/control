@@ -1,14 +1,19 @@
 Source: rzip
+Maintainer: Package Salvaging Team <team+salvage@tracker.debian.org>
 Section: utils
 Priority: optional
-Maintainer: Deepin Developer <deepin-dev@deepin.org>
-Build-Depends: debhelper (>= 10), dh-autoreconf, libbz2-dev (>= 1.0.2)
-Standards-Version: 3.9.8
-Homepage: http://rzip.samba.org
+Build-Depends: debhelper-compat (= 13),
+               libbz2-dev
+Standards-Version: 4.7.0
+Vcs-Browser: https://salsa.debian.org/salvage-team/rzip
+Vcs-Git: https://salsa.debian.org/salvage-team/rzip.git
+Homepage: https://rzip.samba.org
+Rules-Requires-Root: no
 
 Package: rzip
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends},
+         ${misc:Depends}
 Description: compression program for large files
  rzip is a compression program able to take advantage of
  long distance redundancies in files, allowing greater

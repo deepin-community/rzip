@@ -1,4 +1,4 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: Andrew Tridgell <rzip@tridgell.net>
 Upstream-Name: rzip
 Source: http://rzip.samba.org/ftp/rzip/
