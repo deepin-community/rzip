@@ -6,3 +6,7 @@
 60_fix_manpage.patch
 70_hardeningflags.patch
 80-CVE-2017-8364-fill-buffer.patch
+0009-Refuse-compressing-directories-Closes-411706.patch
+0010-Don-t-loop-forever-if-input-truncated-or-corrupted-C.patch
+0011-Fix-UBSAN-shifts.patch
+0012-Detect-short-read-preventing-uninitialised-memory-ac.patch

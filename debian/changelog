@@ -1,5 +1,141 @@
-rzip (2.1-deepin) stable; urgency=medium
+rzip (2.1-5) unstable; urgency=medium
 
-  * ['Rebuild  against by  current gcc 11.2']
+  [ наб ]
+  * Salvage Team upload
+  * Maintainer: Package Salvaging Team <team+salvage@tracker.debian.org>
+    (Closes: #1085154)
+  * Standards-Version: 3.9.8 -> 4.7.0
+  * d/patches/0009-0012:
+    + Refuse compressing directories (Closes: #411706)
+    + Don't loop forever if input truncated (or corrupted) (Closes: #1085156)
+    + Fix UBSAN shifts
+    + Detect short read, preventing uninitialised memory access
+      (Closes: #774037)
+  * Vcs-Git: https://salsa.debian.org/salvage-team/rzip.git
 
- -- Deepin Packages Builder <packages@deepin.org>  Thu, 11 Aug 2022 23:39:51 +0800
+  [ Andreas Tille ]
+  * debhelper-compat 13
+  * Secure URI in copyright format (routine-update)
+  * Rules-Requires-Root: no (routine-update)
+  * Trim trailing whitespace.
+  * Use secure URI in Homepage field.
+  * Drop unnecessary dependency on dh-autoreconf.
+  * Rely on pre-initialized dpkg-architecture variables.
+  * Secure URI in watch file
+
+ -- наб <nabijaczleweli@nabijaczleweli.xyz>  Tue, 15 Oct 2024 16:51:08 +0200
+
+rzip (2.1-4.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * 80-CVE-2017-8364-fill-buffer.patch: fix heap buffer overflow write by
+    allocating a properly sized buffer. Patch taken from openSUSE.
+    (CVE-2017-8364). Closes: 861614.
+
+ -- Emilio Pozuelo Monfort <pochu@debian.org>  Fri, 26 May 2017 18:40:30 +0200
+
+rzip (2.1-4) unstable; urgency=medium
+
+  * New maintainer. Thanks to all previous people that have helped
+    this package. (Closes: #706616)
+  * Bumped DH level to 10.
+  * debian/control: Bumped Standards-Version to 3.9.8.
+  * debian/copyright: Updated the packaging rights.
+  * debian/watch: Bumped to version 4.
+
+ -- Daniele Adriana Goulart Lopes <danydrik@yahoo.com.br>  Wed, 07 Dec 2016 15:44:06 -0200
+
+rzip (2.1-3) unstable; urgency=medium
+
+  * QA upload.
+  * Using autoreconf now.
+  * debian/control:
+      - Bumped Standards-Version to 3.9.7.
+      - Improved the long description.
+  * debian/copyright:
+      - Dropped dot-zero from GPL license short name.
+      - Moved the debian/* block to last position between blocks.
+      - Unified some blocks to simplify the copyright file.
+      - Updated and fixed some information about the upstreams.
+      - Updated the packaging copyright data.
+  * debian/patches/:
+      - Added an underscore character after all leading numbers in patch names.
+      - Changed some suffix from .diff to .patch.
+  * debian/rules:
+      - Added DEB_BUILD_MAINT_OPTIONS variable to improve the GCC hardening.
+      - Removed unnecessary parameters --prefix and --mandir from
+        override_dh_auto_configure target.
+  * debian/rzip.clean: removed. The right name must be debian/clean and it
+      already exist.
+  * debian/rzip.manpages: renamed to manpages.
+
+ -- Joao Eriberto Mota Filho <eriberto@debian.org>  Sun, 06 Mar 2016 22:43:59 -0300
+
+rzip (2.1-2) unstable; urgency=low
+
+  [ Daniel Echeverry ]
+  * QA upload.
+  * Switch compat level 4 to 9.
+  * Switch to dpkg-source 3.0 (quilt) format. Closes: #664444
+  * Add debian/watch
+  * debian/control
+    + Set QA team as Maintainer
+    + Remove dpatch in B-D
+    + Add ${misc:Depends}. Closes: #715176
+    + Add Homepage field
+    + Bump Standards-Version to 3.9.4
+    + Bump debhelper to 9 in B-D
+  * debian/patches
+    + Add 60fix_manpage.diff
+      + Fix hyphen-used-as-minus-sign lintian warning
+      + Fix some typos. Closes: #355835
+    + Add description in 50fhs.patch
+    + Add 70hardeningflags.diff
+      + Add CPPFLAGS, CFLAGS and LDFLAGS to use hardening flags
+  * debian/copyright
+    + Update to DEP5 copyright format 1.0
+  * debian/rules
+    + Use new-style dh format
+  * Add debian/rzip.clean
+    + Clean up generate and build files
+
+  [ Ryan Kavanagh ]
+  * Remove Makefile and config.h on clean
+
+ -- Daniel Echeverry <epsilon77@gmail.com>  Wed, 14 Aug 2013 21:46:23 -0500
+
+rzip (2.1-1) unstable; urgency=low
+
+  * New upstream fixes a bug that prevented some files from being
+    uncompressed.  Closes: #353109.
+  * The man page in the previous version incorrectly stated the default
+    compression level; this was a mistake while backporting changes for 2.0-2.
+    The patch with the error has been removed and the man page again correctly
+    states the default compression level (-6).  Closes: #299327.
+  * 10mod_time.dpatch from David Frey: preserve modification times.  Closes:
+    #315382.
+  * 20long-options.dpatch: implement GNU-style long options.  Closes: #297701.
+  * 30man_spelling corrects a spelling error.  Spotted by A Costa.  Closes:
+    #355835.
+  * 40runzip.dpatch: link rzip to runzip as the bzip2 and gzip packages do.
+    Closes: #319158.
+  * 50fhs.dpatch: Don't install man pages into /usr/man.
+  * Update standards version.
+  * Provide a more enlightening description of rzip in debian/control.
+  * Fixup copyright file to correctly attribute copyrights for md4.* and
+    rzip.c.
+
+ -- Alec Berryman <alec@thened.net>  Tue, 11 Apr 2006 23:28:05 +0100
+
+rzip (2.0-2) unstable; urgency=medium
+
+  * Fix to enable decompression of large sparsely-populated files
+    (backported from CVS).  Closes: #265200
+
+ -- Alec Berryman <alec@thened.net>  Sat, 21 Aug 2004 14:16:40 -0400
+
+rzip (2.0-1) unstable; urgency=low
+
+  * Initial packaging.  Closes: #236690
+
+ -- Alec Berryman <alec@thened.net>  Sat, 10 Jul 2004 20:16:33 -0400
